@@ -4,7 +4,7 @@ const { User } = require('./models')
 const path = require('path');
 const express = require('express');
 const passport = require('passport');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const BearerStrategy = require('passport-http-bearer').Strategy;
 const socketRooms = require('./socket').socketRooms;
@@ -31,13 +31,15 @@ const upload = multer({ storage: storage });
 
 mongoose.Promise = global.Promise
 
-let secret = {
-  CLIENT_ID: process.env.CLIENT_ID,
-  CLIENT_SECRET: process.env.CLIENT_SECRET
+let keys = {
+  googleplus: {
+    CLIENT_ID: process.env.CLIENT_ID,
+    CLIENT_SECRET: process.env.CLIENT_SECRET
+  }
 }
 
 if (process.env.NODE_ENV != 'production') {
-  secret = require('./secret');
+  keys = require('./secret');
 }
 
 const app = express();
@@ -45,8 +47,8 @@ app.use(passport.initialize());
 
 passport.use(
   new GoogleStrategy({
-    clientID: secret.CLIENT_ID,
-    clientSecret: secret.CLIENT_SECRET,
+    clientID: keys.googleplus.CLIENT_ID,
+    clientSecret: keys.googleplus.CLIENT_SECRET,
     callbackURL: `/api/auth/google/callback`
   },
     (accessToken, refreshToken, profile, cb) => {
@@ -157,15 +159,16 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 
 let server;
 
-function runServer(port = PORT) {
+function runServer(databaseUrl = DATABASE_URL, port = PORT) {
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl = DATABASE_URL, err => {
+    mongoose.connect(databaseUrl, err => {
       if (err) {
         return reject(err);
       }
       const nodeServer = require('http').createServer(app);
       const io = require('socket.io')(nodeServer);
       socketRooms(io);
+      console.log('node Server Port is: '+port);
       server = nodeServer.listen(port, () => {
         resolve();
       })
@@ -191,7 +194,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer();
+  runServer(DATABASE_URL, PORT).catch(err => console.error(err));
 }
 
 module.exports = {

@@ -6,6 +6,20 @@ body {
 main {
   margin-top: 16%;
 }
+
+.metronome {
+  text-align: center;
+  margin: 0 auto;
+  border: 2px solid rgb(67, 0, 109);
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+  margin-bottom: 20px;
+}
+.metronome-red  {
+  background: red;
+}
+
 .play-button, .stop-button, 
 .plus-button, .minus-button,
 .send-button { 

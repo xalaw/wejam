@@ -1,7 +1,7 @@
-import { SET_IS_PLAYING, SET_NOT_PLAYING, RECEIVE_RECORDING, START_RECORDING, STOP_RECORDING, UPDATE_RECORDING_MESSAGE, ENABLE_SEND_RECORDING, MUTE, CHANGE_INSTRUMENT, FLASH_METRONOME_RED, FLASH_METRONOME_WHITE } from "./actions"
+import { SET_IS_PLAYING, SET_NOT_PLAYING, RECEIVE_RECORDING, START_RECORDING, STOP_RECORDING, UPDATE_RECORDING_MESSAGE, ENABLE_SEND_RECORDING, MUTE, CHANGE_INSTRUMENT, METRONOME_ON, METRONOME_OFF } from "./actions"
 
 const initialState = {
-    metronomeRed: false,
+    metronomeOn: false,
     isPlaying: false,
     bpm: 78,
     timeSignature: 4,
@@ -17,15 +17,15 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case FLASH_METRONOME_RED:
+        case METRONOME_ON:
             return {
                 ...state,
-                metronomeRed: true
+                metronomeOn: true
             }
-        case FLASH_METRONOME_WHITE:
+        case METRONOME_OFF:
             return {
                 ...state,
-                metronomeRed: false
+                metronomeOn: false
             }
         case SET_IS_PLAYING:
             return {

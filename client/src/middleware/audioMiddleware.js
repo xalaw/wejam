@@ -166,13 +166,13 @@ export const audioMiddleware = store => {
         }
         if (currentSubdivision === 2 || currentSubdivision === (2 + (4 * timeSignature))) {
           // playMetronomeTone(nextTickTime, .3);
-          store.dispatch({ type: actions.FLASH_METRONOME_RED })
-          setTimeout(() => store.dispatch({ type: actions.FLASH_METRONOME_WHITE }), 100)
+          store.dispatch({ type: actions.METRONOME_ON })
+          setTimeout(() => store.dispatch({ type: actions.METRONOME_OFF }), 100)
         }
         else if (currentSubdivision % action.timeSignature === 2) {
           // playMetronomeTone(nextTickTime, .07);
-          store.dispatch({ type: actions.FLASH_METRONOME_RED })
-          setTimeout(() => store.dispatch({ type: actions.FLASH_METRONOME_WHITE }), 100)
+          store.dispatch({ type: actions.METRONOME_ON })
+          setTimeout(() => store.dispatch({ type: actions.METRONOME_OFF }), 100)
         }
       }
       action.currentSubdivision = currentSubdivision

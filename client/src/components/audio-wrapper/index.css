@@ -10,7 +10,7 @@ main {
 .metronome {
   text-align: center;
   margin: 0 auto;
-  border: 2px solid rgb(67, 0, 109);
+  border: 7px solid rgb(206, 173, 100);
   height: 50px;
   width: 50px;
   border-radius: 50%;
@@ -18,6 +18,10 @@ main {
 }
 .metronome-red  {
   background: red;
+}
+
+.metronome-on {
+  background: grey;
 }
 
 .play-button, .stop-button, 

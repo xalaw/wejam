@@ -1,11 +1,11 @@
-export const FLASH_METRONOME_RED = "FLASH_METRONOME_RED"
-export const flashMetronomeRed = () => ({
-    type: FLASH_METRONOME_RED
+export const METRONOME_ON = "METRONOME_ON"
+export const MetronomeOn = () => ({
+    type: METRONOME_ON
 })
 
-export const FLASH_METRONOME_WHITE = "FLASH_METRONOME_WHITE"
-export const flashMetronomeWhite = () => ({
-    type: FLASH_METRONOME_WHITE
+export const METRONOME_OFF = "METRONOME_OFF"
+export const MetronomeOff = () => ({
+    type: METRONOME_OFF
 })
 
 export const SET_IS_PLAYING = "SET_IS_PLAYING"

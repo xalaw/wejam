@@ -160,6 +160,8 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 let server;
 
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
+  console.log('db url is: '+databaseUrl);
+  console.log('node Server Port is: '+port);
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
       if (err) {
@@ -168,7 +170,6 @@ function runServer(databaseUrl = DATABASE_URL, port = PORT) {
       const nodeServer = require('http').createServer(app);
       const io = require('socket.io')(nodeServer);
       socketRooms(io);
-      console.log('node Server Port is: '+port);
       server = nodeServer.listen(port, () => {
         resolve();
       })

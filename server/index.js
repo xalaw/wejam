@@ -159,18 +159,18 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 
 let server;
 
-function runServer(databaseUrl = process.env.DATABASE_URL, port = process.env.PORT) {
-  console.log('db url is: '+databaseUrl);
-  console.log('node Server Port is: '+port);
+function runServer(PORT) {
+  console.log('db url is: '+process.env.DATABASE_URL);
+  console.log('node Server Port is: '+PORT);
   return new Promise((resolve, reject) => {
-    mongoose.connect(databaseUrl, err => {
+    mongoose.connect(process.env.DATABASE_URL, err => {
       if (err) {
         return reject(err);
       }
       const nodeServer = require('http').createServer(app);
       const io = require('socket.io')(nodeServer);
       socketRooms(io);
-      server = nodeServer.listen(port, () => {
+      server = nodeServer.listen(PORT, () => {
         resolve();
       })
         .on('error', (err) => {
@@ -195,7 +195,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer(DATABASE_URL, PORT).catch(err => console.error(err));
+  runServer(PORT).catch(err => console.error(err));
 }
 
 module.exports = {

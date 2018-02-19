@@ -159,7 +159,7 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 
 let server;
 
-function runServer(databaseUrl = DATABASE_URL, port = PORT) {
+function runServer(databaseUrl = process.env.DATABASE_URL, port = process.env.PORT) {
   console.log('db url is: '+databaseUrl);
   console.log('node Server Port is: '+port);
   return new Promise((resolve, reject) => {

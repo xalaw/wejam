@@ -160,8 +160,6 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 let server;
 
 function runServer(PORT) {
-  console.log('db url is: '+process.env.DATABASE_URL);
-  console.log('node Server Port is: '+PORT);
   return new Promise((resolve, reject) => {
     mongoose.connect(process.env.DATABASE_URL, err => {
       if (err) {

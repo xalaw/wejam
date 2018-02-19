@@ -195,7 +195,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer(DATABASE_URL, PORT).catch(err => console.error(err));
+  runServer(process.env.DATABASE_URL, process.env.PORT).catch(err => console.error(err));
 }
 
 module.exports = {

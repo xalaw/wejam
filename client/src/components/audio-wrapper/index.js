@@ -113,12 +113,12 @@ class AudioWrapper extends React.Component {
           <select className="instrument-select" onChange={(e) => {
             this.props.dispatch(changeInstrument(e.target.value))
           }}>
-            <option value="electric-guitar"> 🎸 Electric Guitar</option>
             <option value="keyboard">🎹 Keyboard</option>
+            <option value="bass-synth">🎹 Bass Synth</option>
+            <option value="electric-guitar"> 🎸 Electric Guitar</option>
             <option value="drums">🥁 Drums</option>
             <option value="mic">🎤 Mic</option>
-            <option value="bass-synth">🎹 Bass Synth</option>
-            <option value="misc-sounds">❓Misc</option>
+            <option value="misc-sounds">❓ Misc</option>
           </select> 
 
           {instrument}

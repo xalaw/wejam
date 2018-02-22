@@ -11,7 +11,7 @@ const initialState = {
     enableSendRecording: false,
     roommates: false,
     muted: {},
-    instrument: "electric-guitar",
+    instrument: "keyboard",
     keyTracker: {}
 }
 

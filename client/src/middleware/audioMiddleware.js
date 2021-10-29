@@ -17,14 +17,14 @@ export const audioMiddleware = store => {
   let isRecording = false;
 
   //helper functions
-  function playMetronomeTone(time, velocity) {
+  function playMetronomeTone(time, velocity, note) {
     let osc = audioContext.createOscillator();
     let amp = audioContext.createGain();
     osc.connect(amp);
     amp.connect(audioContext.destination);
 
     amp.gain.value = velocity;
-    osc.frequency.value = 208;
+    osc.frequency.value = note;
 
     osc.start(time);
     osc.stop(time + 0.1);
@@ -165,12 +165,12 @@ export const audioMiddleware = store => {
           })
         }
         if (currentSubdivision === 2 || currentSubdivision === (2 + (4 * timeSignature))) {
-          // playMetronomeTone(nextTickTime, .3);
+          playMetronomeTone(nextTickTime, .3, 308);
           store.dispatch({ type: actions.METRONOME_ON })
           setTimeout(() => store.dispatch({ type: actions.METRONOME_OFF }), 100)
         }
         else if (currentSubdivision % action.timeSignature === 2) {
-          // playMetronomeTone(nextTickTime, .07);
+          playMetronomeTone(nextTickTime, .07, 208);
           store.dispatch({ type: actions.METRONOME_ON })
           setTimeout(() => store.dispatch({ type: actions.METRONOME_OFF }), 100)
         }

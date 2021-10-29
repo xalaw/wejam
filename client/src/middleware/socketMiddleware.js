@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 let socket;
 
 export function storeWrapper(store){
-  socket = io();
+  socket = io('localhost:3001');
   socket.on('hasJoined', (data) => store.dispatch(actions.setRoomAndUser(data)));
   socket.on('roomError', (error) => store.dispatch(actions.socketError(error)));
   socket.on('listRooms', (rooms) => store.dispatch(actions.getAvailableRooms(rooms))); 

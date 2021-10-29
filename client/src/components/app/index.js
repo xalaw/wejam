@@ -15,11 +15,12 @@ class App extends React.Component {
   }
 
   render() {
-    if (!this.props.currentUser) {
-      return (
-        <section className="login-section"><LoginPage /></section>
-      );
-    }
+    // DISABLE LOGIN TEMPORARILY  #######
+    // if (!this.props.currentUser) {
+    //   return (
+    //     <section className="login-section"><LoginPage /></section>
+    //   );
+    // }
 
     return <SocketWrapper />;
   }

@@ -1,12 +1,12 @@
 {
-  "name": "thinkful-full-stack-template-server",
+  "name": "WeJam Server",
   "version": "1.0.0",
-  "description": "Server portion of a full-stack starter template",
+  "description": "Serves routes, socket.io and authentication",
   "main": "index.js",
   "scripts": {
     "start": "nodemon index.js"
   },
-  "author": "Joe Turner <jturner@thinkful.com>",
+  "author": "Alina Law",
   "license": "MIT",
   "devDependencies": {
     "nodemon": "^1.11.0"

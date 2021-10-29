@@ -1,4 +1,4 @@
-require('dotenv').config();
+//require('dotenv').config();
 const { DATABASE_URL, PORT } = require('./config');
 const { User } = require('./models')
 const path = require('path');
@@ -38,59 +38,61 @@ let keys = {
   }
 }
 
-if (process.env.NODE_ENV != 'production') {
-  keys = require('./secret');
-}
+// Removing this check for production, don't need to connect to any db.
+
+//if (process.env.NODE_ENV != 'production') {
+//  keys = require('./secret');
+//}
 
 const app = express();
-app.use(passport.initialize());
+// app.use(passport.initialize());
 
-passport.use(
-  new GoogleStrategy({
-    clientID: keys.googleplus.CLIENT_ID,
-    clientSecret: keys.googleplus.CLIENT_SECRET,
-    callbackURL: `/api/auth/google/callback`
-  },
-    (accessToken, refreshToken, profile, cb) => {
-      User
-        .findOneAndUpdate({
-          googleId: profile.id,
-          displayName: profile.displayName
-        },
-        {
-          $set: {
-            accessToken: accessToken,
-            googleId: profile.id
-          }
-        }, {
-          upsert: true,
-          new: true
-        })
-        .then((user) => {
-          return cb(null, user);
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  ));
+// passport.use(
+//   new GoogleStrategy({
+//     clientID: keys.googleplus.CLIENT_ID,
+//     clientSecret: keys.googleplus.CLIENT_SECRET,
+//     callbackURL: `/api/auth/google/callback`
+//   },
+//     (accessToken, refreshToken, profile, cb) => {
+//       User
+//         .findOneAndUpdate({
+//           googleId: profile.id,
+//           displayName: profile.displayName
+//         },
+//         {
+//           $set: {
+//             accessToken: accessToken,
+//             googleId: profile.id
+//           }
+//         }, {
+//           upsert: true,
+//           new: true
+//         })
+//         .then((user) => {
+//           return cb(null, user);
+//         })
+//         .catch((err) => {
+//           console.error(err)
+//         })
+//     }
+//   ));
 
-passport.use(
-  new BearerStrategy(
-    (token, done) => {
-      User
-        .findOne({ accessToken: token })
-        .then((user) => {
-          if (user) {
-            return done(null, user);
-          }
-        })
-        .catch((err) => {
-          console.error(err)
-        })
-    }
-  )
-);
+// passport.use(
+//   new BearerStrategy(
+//     (token, done) => {
+//       User
+//         .findOne({ accessToken: token })
+//         .then((user) => {
+//           if (user) {
+//             return done(null, user);
+//           }
+//         })
+//         .catch((err) => {
+//           console.error(err)
+//         })
+//     }
+//   )
+// );
 
 app.get('/api/auth/google',
   passport.authenticate('google', {
@@ -159,42 +161,51 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 
 let server;
 
+// UPDATE 10/28/2021  Note: Bypass checking database and run the http server.
+const nodeServer = require('http').createServer(app);
+const io = require('socket.io')(nodeServer);
+socketRooms(io);
+
+nodeServer.listen(PORT, () => {
+  console.log(`Socket serever is running on ${PORT}`);
+});
+
 function runServer(PORT) {
-  return new Promise((resolve, reject) => {
-    mongoose.connect(process.env.DATABASE_URL, err => {
-      if (err) {
-        return reject(err);
-      }
-      const nodeServer = require('http').createServer(app);
-      const io = require('socket.io')(nodeServer);
-      socketRooms(io);
-      server = nodeServer.listen(PORT, () => {
-        resolve();
-      })
-        .on('error', (err) => {
-          mongoose.disconnect();
-          reject(err);
-        });
-    });
-  });
+  // return new Promise((resolve, reject) => {
+  //   mongoose.connect(process.env.DATABASE_URL, err => {
+  //     if (err) {
+  //       return reject(err);
+  //     }
+  //     const nodeServer = require('http').createServer(app);
+  //     const io = require('socket.io')(nodeServer);
+  //     socketRooms(io);
+  //     server = nodeServer.listen(PORT, () => {
+  //       resolve();
+  //     })
+  //       .on('error', (err) => {
+  //         mongoose.disconnect();
+  //         reject(err);
+  //       });
+  //   });
+  // });
 }
 
 function closeServer() {
-  return mongoose.disconnect().then(() => {
-    return new Promise((resolve, reject) => {
-      server.close((err) => {
-        if (err) {
-          return reject(err);
-        }
-        resolve();
-      });
-    });
-  });
+  // return mongoose.disconnect().then(() => {
+  //   return new Promise((resolve, reject) => {
+  //     server.close((err) => {
+  //       if (err) {
+  //         return reject(err);
+  //       }
+  //       resolve();
+  //     });
+  //   });
+  // });
 }
 
-if (require.main === module) {
-  runServer(PORT).catch(err => console.error(err));
-}
+// if (require.main === module) {
+//   runServer(PORT).catch(err => console.error(err));
+// }
 
 module.exports = {
   app, runServer, closeServer
